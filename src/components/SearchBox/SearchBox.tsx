@@ -10,7 +10,8 @@ export default function SearchBox({ value, onChange }: Props) {
   return (
     <input
       className={styles.input}
-      placeholder="Search notes..."
+      type="text"
+      placeholder="Search notes"
       value={value}
       onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
     />

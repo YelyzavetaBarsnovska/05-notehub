@@ -8,10 +8,10 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchNotes } from "../../services/noteService";
 import Loading from "../../shared/Loading";
 import ErrorMessage from "../../shared/ErrorMessage";
-import type { Note } from '../../types/note';
+import styles from './App.module.css';
 
 interface NotesResponse {
-  items: Note[];
+  items: any[];
   totalPages: number;
 }
 
@@ -26,25 +26,30 @@ export default function App() {
   });
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Notes App</h1>
-      
-      <button onClick={() => setIsModalOpen(true)}>Add Note</button>
-      
-      <SearchBox value={search} onChange={setSearch} />
+    <div className={styles.app}>
+      <header className={styles.toolbar}>
+        <SearchBox value={search} onChange={setSearch} />
+        
+        {data && data.totalPages > 1 && (
+          <Pagination
+            page={page}
+            totalPages={data.totalPages}
+            onChange={setPage}
+          />
+        )}
+        
+        <button 
+          className={styles.button} 
+          onClick={() => setIsModalOpen(true)}
+        >
+          Create note +
+        </button>
+      </header>
       
       {isLoading && <Loading />}
       {error && <ErrorMessage message="Ошибка загрузки" />}
       
       {data && <NoteList notes={data.items} />}
-      
-      {data && data.totalPages > 0 && (
-        <Pagination
-          page={page}
-          totalPages={data.totalPages}
-          onChange={setPage}
-        />
-      )}
       
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <NoteForm onSuccess={() => setIsModalOpen(false)} />
