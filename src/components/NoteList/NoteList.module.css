@@ -1,0 +1,12 @@
+.list {
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
+
+
+.item {
+padding: 10px;
+background: #f5f5f5;
+border-radius: 6px;
+}
