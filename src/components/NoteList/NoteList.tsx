@@ -4,11 +4,11 @@ import EmptyState from "../../shared/EmptyState";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deleteNote } from '../../services/noteService';
 
-interface Props {
+interface NoteListProps {
   notes: Note[];
 }
 
-export default function NoteList({ notes }: Props) {
+export default function NoteList({ notes }: NoteListProps) {
   const queryClient = useQueryClient();
   
   const deleteMutation = useMutation({
@@ -35,7 +35,7 @@ export default function NoteList({ notes }: Props) {
           <h2 className={styles.title}>{note.title}</h2>
           <p className={styles.content}>{note.content}</p>
           <div className={styles.footer}>
-            {note.tag && <span className={styles.tag}>{note.tag}</span>}
+            <span className={styles.tag}>{note.tag}</span>
             <button 
               className={styles.button}
               onClick={() => handleDelete(note.id)}

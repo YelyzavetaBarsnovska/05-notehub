@@ -4,8 +4,8 @@ import * as Yup from 'yup';
 import { createNote } from "../../services/noteService";
 import styles from './NoteForm.module.css';
 
-interface Props {
-  onSuccess: () => void;
+interface NoteFormProps {
+  onClose: () => void;
 }
 
 const validationSchema = Yup.object({
@@ -19,20 +19,20 @@ const validationSchema = Yup.object({
     .required('Обовʼязкове поле'),
 });
 
-export default function NoteForm({ onSuccess }: Props) {
+export default function NoteForm({ onClose }: NoteFormProps) {
   const queryClient = useQueryClient();
   
   const { mutate, isPending } = useMutation({
     mutationFn: createNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notes'] });
-      onSuccess();
+      onClose();
     },
   });
 
   return (
     <Formik
-      initialValues={{ title: '', content: '', tag: 'Todo' }}
+      initialValues={{ title: '', content: '', tag: 'Todo' as const }}
       validationSchema={validationSchema}
       onSubmit={(values, { resetForm }) => {
         mutate(values);
@@ -79,7 +79,7 @@ export default function NoteForm({ onSuccess }: Props) {
           <button 
             type="button" 
             className={styles.cancelButton}
-            onClick={onSuccess}
+            onClick={onClose}
           >
             Cancel
           </button>
